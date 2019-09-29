@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Auction</title>
+
+<script th:src="@{/required/jquery.min.js}"></script>
+<script th:src="@{/required/bootstrap.min.js}"></script>
+<script th:src="@{/required/notify.min.js}"></script>
+<script th:src="@{/js/login.js}"></script>
+
+<link  th:href="@{/images/fav.ico}" rel="shortcut icon" type="image/png"/>
+<link  th:href="@{/css/login.css}" rel="stylesheet" />
+<link th:href="@{/required/bootstrap.min.css}" rel="stylesheet" />
+
+</head>
+<body>
+	<div class="login-page">
+	
+		<div class="login-header" align="center">
+			<img th:src="@{/images/logo.png}"> 
+		</div>
+	  <div class="form" >
+	        
+<!--****************************************SIGN UP FORM************************************************ -->
+<!--       th:action="@{/signUp}" -->
+	    <form  th:object="${myUser}" class="register-form"  id="regForm" method="post" onsubmit="return false">
+	      <input type="text" id="cuser" placeholder="name" th:field="*{username}" required/>
+       		
+	      <input type="password" id="cpass" placeholder="password" th:field="*{password}" required/>
+      	  <input type="text" id="address" placeholder="address" th:field="*{address}" required/>
+	      <input type="email" id="email"  placeholder="email address" th:field="*{email}" required/>
+	     
+	      <input type="text" id="contact" placeholder="contact" th:field="*{phoneNumber}" required/>
+	      
+       	  <select class="form-control" id="combo" style="margin-bottom:10px;" th:field="*{question}" >
+       	  	<option th:value="1" >What is my last name ?</option>
+       	  	<option th:value="2" >What is my father name ?</option>
+       	  	<option th:value="3" >What is my fav color ?</option>
+	      </select>
+	      
+	      <input type="text" id="answer" placeholder="answer" th:field="*{answer}" required/>
+	       <p id="msg-signUp" style="color:red;"></p>
+	      <input type="submit" id="create" value="Create" >
+	      <p class="message">Already registered? <a>Sign In</a></p>
+	    </form>
+	          
+<!--****************************************LOGIN FORM************************************************ -->
+<!--       th:action="@{/login}" -->
+ 
+	     <form  th:object="${myUser}" id="loginForm" method="post" class="login-orm" onsubmit="return false">
+    
+	      <input type="text" id="user" placeholder="username" name="username" th:field="*{username}" required/>
+	      <input type="password" id="pass" placeholder="password" name="password" th:field="*{password}" required/>
+	      <p id="msg" style="color:red;"></p>
+	      <input type="submit" id="login" name="login" value="Login" >
+	      <p class="message">Not registered? <a>Create an account</a> </p>
+	      <a id="forget">FORGOT PASSWORD</a>
+	    </form>
+	          
+
+<!--****************************************SECURITY QUESTION FORM************************************************ -->
+      
+	    <form class="secure" th:object="${myUser}" id="secureQus" onsubmit="return false">
+		   	<select class="form-control" id="combo" style="margin-bottom:10px;" th:field="*{question}">
+		      	<option th:value="1"> What is my last name ? </option>
+		      	<option th:value="2"> What is my father name ? </option>
+		      	<option th:value="3"> What is my fav color ? </option>
+	      </select>
+       	  <input type="hidden" th:field="*{email}" id="mainEmail">
+	      <input type="text" id="sAnswer" placeholder="answer" th:field="*{answer}" required/>
+	      <input type="hidden" value="next" name="ques">
+	      <input  type=submit id="secure-next"  value="Next" >
+  		  
+      </form>
+      
+<!--****************************************RECOVER EMAIL FORM************************************************ -->
+      
+      <form class="recover-email" th:object="${myUser}" id="recoverEmail" onsubmit="return false">
+     	<input type="text" id="email" th:field="*{email}" placeholder="email address" required/>
+      	<p id="mailMsg" style="color:red;"></p>
+      	<input  type=submit id="secure-next" value="Next" >
+    	 <a id="forget">Go Back</a>
+    	
+      </form>
+<!--****************************************RESET PASSWORD FORM************************************************ -->      
+       <form class="resetPass" th:object="${myUser}" onsubmit="return false">
+	      <input type="password" id="rpass" placeholder="New Password" th:field="*{password}" required/>
+     	  <input type="hidden" id="rQues" th:field="*{question}">
+     	  <input type="hidden" id="rAns" th:field="*{answer}">
+     	  <input type="hidden" id="rEmail" th:field="*{email}">
+	      <input type="submit" id="reset" value="Reset" >
+	    </form>
+ </div>
+</div>
+
+</body>
+</html>

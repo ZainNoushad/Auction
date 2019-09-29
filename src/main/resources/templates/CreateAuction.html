@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<script src="required/jquery.min.js"></script>
+<link rel="shortcut icon" href="Images/fav.ico" type="image/png">
+<script src="required/bootstrap.min.js"></script>
+<script src="required/notify.min.js"></script>
+<link rel="stylesheet" href="required/bootstrap.min.css">
+<link rel="stylesheet" href="css/postedbid.css">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<script>
+$(document).ready(function(){
+	
+	$('#auction').submit(function(){
+		 
+		  $.post("/createAuction",$(this).serialize(),
+				  function(response){
+					window.location = response
+					  
+				  });
+		 
+	 });
+		
+	var today = new Date();
+	var dd = today.getDate();
+
+	var mm = today.getMonth()+1; 
+	var yyyy = today.getFullYear();
+	if(dd<10) 
+	{
+	    dd='0'+dd;
+	} 
+
+	if(mm<10) 
+	{
+	    mm='0'+mm;
+	} 
+	dd=dd+1;
+	today = yyyy+'-'+mm+'-'+dd;
+	document.getElementById("setDate").min=today;
+});
+	
+</script>
+<body>
+<div  th:insert="/Header.html"> </div>
+<div class="container" >
+	<h1>Post Project</h1>
+ 	<form action="/createAuction" class="form"  id="auction" name="auction" method="POST" enctype="multipart/form-data">
+	      <input type="text" name="title" placeholder="Project Titile" required/>
+	      <input type="number" name="startingPrice" placeholder="Starting Price" required/>
+      	  <input type="date" id="setDate" name="endingDate" placeholder="Project Deadline" required/>
+       	  <select class="form-control" name="category" style="margin-bottom:10px;">
+       	  		<option th:each="category : ${categories}"
+                            th:value="${category.categoryId}"
+                            th:utext="${category.categoryName}"/>
+	      </select>
+	     <textarea name="description" rows="1" cols="1"  style="width:100%" placeholder="Description of the item" required></textarea>
+	     Select Images <input type="file" id="file" name="multiPartFiles" multiple required>
+	     <input type="submit" id="create" value="Post Project" >
+      </form>
+    
+</div>
+
+	
+</body>
+</html>

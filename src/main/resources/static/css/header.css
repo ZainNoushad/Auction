@@ -1,0 +1,165 @@
+.header-basic-light{
+	padding: 20px 40px;
+	box-sizing:border-box;
+/* 	box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.3); */
+	height: 80px;
+	background-color: #fff;
+}
+
+.header-basic-light .header-limiter {
+	max-width: 1200px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+/* Logo */
+.header-basic-light .header-limiter img{
+	max-width: 150px;
+	max-height: 150px;
+	margin-top:-20px;
+}
+.header-basic-light .header-limiter h1{
+	float: left;
+	font: normal 28px Cookie, Arial, Helvetica, sans-serif;
+	line-height: 40px;
+	margin: 0;
+}
+
+.header-basic-light .header-limiter h1 span {
+	color: #5383d3;
+}
+
+/* The header links */
+
+.header-basic-light .header-limiter a {
+	color: #191918;
+	text-decoration: none;
+}
+
+.header-basic-light .header-limiter nav{
+	font:15px Arial, Helvetica, sans-serif;
+	line-height: 40px;
+	float: right;
+}
+
+.header-basic-light .header-limiter nav a{
+	display: inline-block;
+	padding: 0 5px;
+	opacity: 0.9;
+	text-decoration:none;
+	color: #191918;
+	line-height:1;
+}
+
+.header-basic-light .header-limiter nav a.selected {
+	background-color: #86bd4d;
+	color: #ffffff;
+	border-radius: 3px;
+	padding:6px 10px;
+}
+
+/* Making the header responsive. */
+
+@media all and (max-width: 600px) {
+
+	.header-basic-light {
+		padding: 20px 0;
+		height: 85px;
+	}
+
+	.header-basic-light .header-limiter h1 {
+		float: none;
+		margin: -8px 0 10px;
+		text-align: center;
+		font-size: 24px;
+		line-height: 1;
+	}
+
+	.header-basic-light .header-limiter nav {
+		line-height: 1;
+		float:none;
+	}
+
+	.header-basic-light .header-limiter nav a {
+		font-size: 13px;
+	}
+
+}
+
+/* For the headers to look good, be sure to reset the margin and padding of the body */
+
+
+
+
+.header-basic-light .header-limiter a.logout-button {
+	font-size: 13px;
+	font-weight: bold;
+	float: right;
+	border-radius: 3px;
+	background-color: rgba(58, 60, 62, 0);
+	height: 40px;
+	padding: 0 20px;
+	margin-left:50px;
+	border: 1px solid #5E6367;
+	line-height: 40px;
+	box-sizing: border-box;
+}
+
+/* /* ------------------------PROFILE INFORMATION------------------------------  */ */
+
+/* .card { */
+/*   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
+/*   max-width: 300px; */
+/*   margin: auto; */
+/*   text-align: center; */
+/*   font-family: arial; */
+/*   display:none; */
+/* } */
+
+/* .title { */
+/*   color: grey; */
+/*   font-size: 18px; */
+/* } */
+
+/* .card button { */
+/*   border: none; */
+/*   outline: 0; */
+/*   display: inline-block; */
+/*   padding: 8px; */
+/*   color: white; */
+/*   background-color: #000; */
+/*   text-align: center; */
+/*   cursor: pointer; */
+/*   width: 100%; */
+/*   font-size: 18px; */
+/* } */
+
+/* .card a { */
+/*   text-decoration: none; */
+/*   font-size: 22px; */
+/*   color: black; */
+/* } */
+
+/* .card button:hover, .card a:hover { */
+/*   opacity: 0.7; */
+/* } */
+/* .dialog-box { */
+/*       width: 300px; */
+/*       height: 350px; */
+/*       background: #fff; */
+/*       padding: 25px; */
+/*       -webkit-border-radius: 3px; */
+/*       -moz-border-radius: 3px; */
+/*       border-radius: 3px; */
+/*       box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); */
+/*       position: fixed; */
+/*       top: 50%; */
+/*       left: 50%; */
+/*       margin-left: -150px; */
+/*       margin-top: -175px; */
+/* } */
+/* .blur { */
+/* -webkit-filter: blur(3px); */
+/* -moz-filter: blur(3px); */
+/* filter: blur(3px); */
+/* } */
