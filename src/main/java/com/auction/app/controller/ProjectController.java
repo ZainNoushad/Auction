@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -60,35 +62,35 @@ public class ProjectController {
 	
 	@RequestMapping(path = "/createAuction", method = RequestMethod.POST)
 	@ResponseBody
-	public String createAuction(CreateAuctionDTO auction) throws IllegalStateException, IOException {
+	public String createAuction(CreateAuctionDTO auction,HttpServletRequest request) throws IllegalStateException, IOException {
 		String username=SecurityContextHolder.getContext().getAuthentication().getName();
 		User user=userRepository.findByUsername(username);
-		
-		if(user!=null) {
-			if(auction.isDataValid()) {
-				Auction auctionDetails=new Auction(user, auction.getTitle(), auction.getStartingPrice(), LocalDateTime.now(), 
-						DateUtil.getDate(auction.getEndingDate()), categoryRepository.findByCategoryId(auction.getCategory()), auction.getDescription(), 1);
-				
-				Auction createdAuction=auctionRepository.save(auctionDetails);
-				
-				for(MultipartFile file : auction.getMultiPartFiles()) {
-					
-					//Uploading Images
-					File myFile = new File(fileUploadURL + createdAuction.getAuctionId() );
-					myFile.mkdirs();
-					File realFile=new File(myFile.getAbsolutePath()+"/"+file.getOriginalFilename());
-					file.transferTo(realFile);
-					//Adding Image To Database
-					AuctionImage image=new AuctionImage(createdAuction, file.getOriginalFilename());
-					auctionImageRepository.save(image);
-					
-					System.out.println(myFile.getAbsolutePath());
-					
-				}
-				
-			}
-				
-		}
+		System.out.println(request.getLocalAddr());
+//		if(user!=null) {
+//			if(auction.isDataValid()) {
+//				Auction auctionDetails=new Auction(user, auction.getTitle(), auction.getStartingPrice(), LocalDateTime.now(), 
+//						DateUtil.getDate(auction.getEndingDate()), categoryRepository.findByCategoryId(auction.getCategory()), auction.getDescription(), 1);
+//				
+//				Auction createdAuction=auctionRepository.save(auctionDetails);
+//				
+//				for(MultipartFile file : auction.getMultiPartFiles()) {
+//					
+//					//Uploading Images
+//					File myFile = new File(fileUploadURL + createdAuction.getAuctionId() );
+//					myFile.mkdirs();
+//					File realFile=new File(myFile.getAbsolutePath()+"/"+file.getOriginalFilename());
+//					file.transferTo(realFile);
+//					//Adding Image To Database
+//					AuctionImage image=new AuctionImage(createdAuction, file.getOriginalFilename());
+//					auctionImageRepository.save(image);
+//					
+//					System.out.println(myFile.getAbsolutePath());
+//					
+//				}
+//				
+//			}
+//				
+//		}
 			
 		System.out.println("hei");
 		
