@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,11 +69,11 @@ public class ProjectController {
 		String username=SecurityContextHolder.getContext().getAuthentication().getName();
 		User user=userRepository.findByUsername(username);
 		System.out.println(request.getLocalAddr());
-		Category ct=new Category();
-		ct.setCategoryId(1);
-		ct.setCategoryName("Game");
-		ct.setActive(1);
-		categoryRepository.save(ct);
+//		Category ct=new Category();
+//		ct.setCategoryId(1);
+//		ct.setCategoryName("Game");
+//		ct.setActive(1);
+//		categoryRepository.save(ct);
 		
 		if(user!=null) {
 			if(auction.isDataValid()) {
@@ -107,7 +109,8 @@ public class ProjectController {
 	@ResponseBody
 	public byte[] getImage(@PathVariable(value = "auctionId") int auctionId) throws IOException {
 		System.out.println(auctionId);
-		AuctionImage image=auctionImageRepository.findOneImage(auctionId);
+		Pageable pageable=PageRequest.of(0, 1);
+		AuctionImage image=auctionImageRepository.findByProject(auctionRepository.findById(2).get(),pageable).get(0);
 	    File serverFile = new File("auction/" + auctionId + "/" +image.getPath());
 
 	    return Files.readAllBytes(serverFile.toPath());
