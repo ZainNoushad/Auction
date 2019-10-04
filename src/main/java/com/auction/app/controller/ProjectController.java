@@ -134,15 +134,16 @@ public class ProjectController {
 	
 				auctionImages = walk.filter(Files::isRegularFile)
 						.map(x -> x.toString()).collect(Collectors.toList());
-				
-				int fileIndex = ThreadLocalRandom.current().nextInt(0, auctionImages.size());
-				return auctionImages.get(fileIndex);
-			} catch (IOException e) {
-				e.printStackTrace();
-				
 			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+				
 		}
-		return "";
+		int fileIndex = ThreadLocalRandom.current().nextInt(0, auctionImages.size());
+		return auctionImages.get(fileIndex);
+		
+		
 	}
 
 	@RequestMapping(value = "/image/{auctionId}")
