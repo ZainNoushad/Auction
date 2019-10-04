@@ -95,7 +95,7 @@ public class ProjectController {
 				Auction createdAuction=auctionRepository.save(auctionDetails);
 				
 				//Uploading Files
-				for(MultipartFile file : auction.getMultiPartFiles()) {
+			 	for(MultipartFile file : auction.getMultiPartFiles()) {
 					/*
 					 ************** Until any storage service is setup file will be randomly choosen
 					 ************** from image folder  
