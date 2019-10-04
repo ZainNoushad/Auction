@@ -152,7 +152,7 @@ public class ProjectController {
 		try {
 			Pageable pageable=PageRequest.of(0, 1);
 			AuctionImage image=auctionImageRepository.findByProject(auctionRepository.findById(auctionId).get(),pageable).get(0);
-		    File serverFile = new File("auction/images/" +image.getPath());
+		    File serverFile = new File(image.getPath());
 	
 		    return Files.readAllBytes(serverFile.toPath());
 		}catch (Exception e) {
