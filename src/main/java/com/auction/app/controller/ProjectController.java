@@ -3,11 +3,19 @@ package com.auction.app.controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -56,9 +64,18 @@ public class ProjectController {
 	@Value("${auction.fileUpload}")
 	String fileUploadURL;
 	
+	private static List<String> auctionImages;
+	 
+	private static final Logger log = LoggerFactory.getLogger(ProjectController.class);
+
+	
 	@RequestMapping("/createAuction")
 	public String projectPage(Model model) {
-		
+		Category ct=new Category();
+		ct.setCategoryId(1);
+		ct.setCategoryName("Game");
+		ct.setActive(1);
+		categoryRepository.save(ct);
 		model.addAttribute("categories", categoryRepository.findAll());
 		return "CreateAuction";
 	}
@@ -69,11 +86,6 @@ public class ProjectController {
 		String username=SecurityContextHolder.getContext().getAuthentication().getName();
 		User user=userRepository.findByUsername(username);
 		System.out.println(request.getLocalAddr());
-//		Category ct=new Category();
-//		ct.setCategoryId(1);
-//		ct.setCategoryName("Game");
-//		ct.setActive(1);
-//		categoryRepository.save(ct);
 		
 		if(user!=null) {
 			if(auction.isDataValid()) {
@@ -82,18 +94,30 @@ public class ProjectController {
 				
 				Auction createdAuction=auctionRepository.save(auctionDetails);
 				
+				//Uploading Files
 				for(MultipartFile file : auction.getMultiPartFiles()) {
-					
-					//Uploading Images
-					File myFile = new File("auction/" + createdAuction.getAuctionId() );
-					myFile.mkdirs();
-					File realFile=new File(myFile.getAbsolutePath()+"/"+file.getOriginalFilename());
-					file.transferTo(realFile);
-					//Adding Image To Database
-					AuctionImage image=new AuctionImage(createdAuction, file.getOriginalFilename());
+					/*
+					 ************** Until any storage service is setup file will be randomly choosen
+					 ************** from image folder  
+						//Uploading Images
+						File myFile = new File("auction/" + createdAuction.getAuctionId() );
+						myFile.mkdirs();
+						File realFile=new File(myFile.getAbsolutePath()+"/"+file.getOriginalFilename());
+						file.transferTo(realFile);
+						//Adding Image To Database
+						AuctionImage image=new AuctionImage(createdAuction, file.getOriginalFilename());
+						auctionImageRepository.save(image);
+						
+						System.out.println(realFile.getAbsolutePath());
+					*******************************************************
+					*****************************END
+					*/
+					String fileName=(String) getRandomImage();
+					AuctionImage image=new AuctionImage(createdAuction, fileName);
 					auctionImageRepository.save(image);
 					
-					System.out.println(realFile.getAbsolutePath());
+					
+					
 					
 				}
 				
@@ -101,18 +125,43 @@ public class ProjectController {
 				
 		}
 			
-		System.out.println("hei");
 		
 		return "/";
 	}
+	private String getRandomImage() {
+		if(auctionImages == null) {
+			try (Stream<Path> walk = Files.walk(Paths.get("auction/images/"))) {
+	
+				auctionImages = walk.filter(Files::isRegularFile)
+						.map(x -> x.toString()).collect(Collectors.toList());
+				
+				int fileIndex = ThreadLocalRandom.current().nextInt(0, auctionImages.size());
+				return auctionImages.get(fileIndex);
+			} catch (IOException e) {
+				e.printStackTrace();
+				
+			}
+		}
+		return "";
+	}
+
 	@RequestMapping(value = "/image/{auctionId}")
 	@ResponseBody
 	public byte[] getImage(@PathVariable(value = "auctionId") int auctionId) throws IOException {
-		System.out.println(auctionId);
-		Pageable pageable=PageRequest.of(0, 1);
-		AuctionImage image=auctionImageRepository.findByProject(auctionRepository.findById(2).get(),pageable).get(0);
-	    File serverFile = new File("auction/" + auctionId + "/" +image.getPath());
-
-	    return Files.readAllBytes(serverFile.toPath());
+		try {
+			Pageable pageable=PageRequest.of(0, 1);
+			AuctionImage image=auctionImageRepository.findByProject(auctionRepository.findById(auctionId).get(),pageable).get(0);
+		    File serverFile = new File("auction/images/" +image.getPath());
+	
+		    return Files.readAllBytes(serverFile.toPath());
+		}catch (Exception e) {
+//			e.printStackTrace();
+			log.info("-------------------------------START-------------------------");
+			log.info(">>>>>>>>>>>>>>>>>>Exception Occured >>> getImage()");
+			log.info(">>>>>>>>>>>>>>>>>>Message " + e.getMessage());
+			log.info("------------------------------- END -------------------------");
+			return null;
+		}
+		
 	}
 }
