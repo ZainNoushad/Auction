@@ -32,7 +32,7 @@ public class CompletedAuction {
 	private LocalDateTime auctionCompletedOn;
 	
 	@Column(name="winning_bid_price")
-	private Integer winningBidPrice;
+	private Double winningBidPrice;
 	
 	@Column(name="active")
 	private Integer active;
@@ -69,11 +69,11 @@ public class CompletedAuction {
 		this.auctionCompletedOn = auctionCompletedOn;
 	}
 
-	public Integer getWinningBidPrice() {
+	public Double getWinningBidPrice() {
 		return winningBidPrice;
 	}
 
-	public void setWinningBidPrice(Integer winningBidPrice) {
+	public void setWinningBidPrice(Double winningBidPrice) {
 		this.winningBidPrice = winningBidPrice;
 	}
 

@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.auction.app.model.User;
 import com.auction.app.repository.AuctionRepository;
+import com.auction.app.repository.CompletedAuctionRepository;
 import com.auction.app.repository.UserRepository;
 
 @Controller
@@ -33,6 +34,9 @@ public class UserController {
 	
 	@Autowired
 	AuctionRepository auctionRepository;
+	
+	@Autowired
+	CompletedAuctionRepository completedAuctionRepository;
 	
 //	@Autowired
 //	private PasswordEncoder passwordEncoder;
@@ -60,6 +64,7 @@ public class UserController {
 	@RequestMapping("/")
 	public String mainIndex(Model model) {
 		model.addAttribute("projects", auctionRepository.findByActive(1));
+		model.addAttribute("completedProjects",completedAuctionRepository.findAll() );
 		return "Index";
 	}
 	

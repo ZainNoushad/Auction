@@ -3,185 +3,102 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<meta name="keywords" content="Goggles a Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <title>Insert title here</title>
-<!-- Default-JavaScript --><script src="js/jquery-2.2.3.js"></script>
+<!-- Default-JavaScript --><script th:src="@{../js/jquery-2.2.3.js}"></script>
 
-<!-- Index-Page-CSS -->	<link rel="stylesheet" href="css/styleView.css"		 type="text/css" media="all"> 
-<!-- FlexSlider-CSS -->	<link rel="stylesheet" href="css/flexslider.css" type="text/css" media="all">
+<!-- Index-Page-CSS -->	<link rel="stylesheet" th:href="@{../css/styleView.css}"		 type="text/css" media="all"> 
+<!-- FlexSlider-CSS -->	<link rel="stylesheet" href="../css/flexslider.css" type="text/css" media="all">
 <!-- //Custom-Stylesheet-Links -->
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-<link rel="shortcut icon" href="images/fav.ico" type="image/png">
+<link rel="shortcut icon" href="../images/fav.ico" type="image/png">
 <!-- Font-Awesome-File-Links -->
-<!-- CSS --> <link rel="stylesheet" href="css/font-awesome.css" 		 type="text/css" media="all">
-<!-- TTF --> <link rel="stylesheet" href="fonts/fontawesome-webfont.ttf" type="text/css" media="all">
+<!-- CSS --> <link rel="stylesheet" href="../css/font-awesome.css" 		 type="text/css" media="all">
+<!-- TTF --> <link rel="stylesheet" href="../fonts/fontawesome-webfont.ttf" type="text/css" media="all">
 <!-- //Font-Awesome-File-Links -->
 
 
 
 </head>
-<script>
+<script th:inline="javascript">
+
 
 $(document).ready(function(){
 	$('#bidBtn').click(function(){
-		if($('#bidPrice').val() < $('#sPrice').val()){
-		$.confirm({
-		    
-		    content: 'You are Biddig lower then the starting amount it will lower your chance of winning the auction',
-		    type: 'dark',
-		    icon: 'fa fa-warning',
-		    title: 'ATTENTION!!!!!!',
-		    buttons: {
-		        confirm: function () {
-		        	$.post("PostBidServlet",
-		        		  	{
-		          				action:"add",
-		        	  			cId:<%=session.getAttribute("customerId")%>,
-		        	  			pId:$('#pId').val(),
-		        	  			price:$('#bidPrice').val()
-		        		 
-		        		  	},
-		        		  	function(a){
-//		         		  		$.notify("Bid Posted");
-		        		  		window.location="ProductViews.jsp?id="+$('#pId').val();
-		        		  	}
-		        		);
-		        },
-		        cancel: function () {
-		            
-		        },
-		        
-		    }
-		});
-		}
-		else{
-			$.post("PostBidServlet",
-        		  	{
-          				action:"add",
-        	  			cId:<%=session.getAttribute("customerId")%>,
-        	  			pId:$('#pId').val(),
-        	  			price:$('#bidPrice').val()
-        		 
-        		  	},
-        		  	function(a){
-//         		  		$.notify("Bid Posted");
-        		  		window.location="ProductViews.jsp?id="+$('#pId').val();
-        		  	}
-        		);
-		}
+		$.post("/auction/[[${auction.auctionId}]]/addBid",
+    		  	{
+      		
+				bidAmount:$('#bidPrice').val()
+    		 
+    		  	},
+    		  	function(a){
+     		  		var data=a.split(',');
+     		  		
+     		  		if(data[0]=="error")
+     		  			$.notify(data[1]);
+     		  		else{
+     		  			refreshData();
+     		  			$.notify(data[1], "success");
+     		  		}
+     		  		
+    		  	}
+    		);
 	});
-	
+refreshData();	
 	
 });	
-function del(id){
-	
-		 $.post("PostBidServlet",
-		  	{
- 				action:"delete",
-	  			bidId:id
-	 
-		  	},
-		  	function(a){
-		  		$.notify("Bid Deleted ","info");
-		  		setTimeout(function(){
-		  		   window.location.reload(1);
-		  		}, 1000);
-		  	}
-		);
-	 
 
-}
-function award(id){
-	$.confirm({
-	    
-	    content: 'Kindly make sure before awarding the bid after then you cannot reverse the action',
-	    type: 'dark',
-	    icon: 'fa fa-warning',
-	    title: 'ATTENTION!!!!!!',
-	    buttons: {
-	        confirm: function () {
-	        	
-	        	$.post("PostBidServlet",
-	        		  	{
-	        				action:$(".award").val(),
-	        				pId:$('#pId').val(),
-	        				bidId:id
-	        	 			
-	        		  	},
-	        		  	function(a){
-	        		  		
-//	        			  		$.notify("Bid Posted");
-	        		  		window.location="ProductViews.jsp?id="+$('#pId').val();
-	        		  	}
-	        		);
-	        },
-	        cancel: function () {
-	            
-	        },
-	        
-	    }
+function refreshData(){
+	$.post("/auction/[[${auction.auctionId}]]/bids",{
+		
+	},
+	function(response){
+		$(".bids").empty();
+		$(".bids").append(response);
 	});
 }
-function message(id,name){
-    
-    $.confirm({
-        title: 'Message to '+name,
-        content: '' +
-        '<label>Enter your message</label>' +
-        '<input type="text" placeholder="Your name" class="name form-control" required />',
-        buttons: {
-            formSubmit: {
-                text: 'Submit',
-                btnClass: 'btn-blue',
-                action: function () {
-                    var msg = this.$content.find('.name').val();
-                    if(!name){
-                        $.alert('Message Cannot be empty');
-                        return false;
-                    }
-                    else{
-                    	$.post("MessageServlet",
-                  			  {
-                  		  			action:"sendMessage",
-                  		  			message:msg,
-                  		  			to:id,
-                  		  			from:<%=session.getAttribute("customerId")%>
-                  		  			
-                  			  },
-                  			  function(a){
-                  				$.alert({ 
-                  			    	theme: 'modern',
-                  			    	icon: 'fa fa-smile-o',
-                  			        title: 'Message Sent!',
-                  			        content: 'Check your messages for details',
-                  			        type: 'dark',
-                  			    });
-                  				  
-                  				  
-                  			  });
 
-                    }
-                    
-                }
-            },
-            cancel: function () {
-                //close
-            },
-        },
-    });
+function delBid(id){
+	
+	 $.post("/auction/deleteBid/"+id,
+	  	{
+
+	  	},
+	  	function(a){
+	  		refreshData();
+	  		$.notify(a,"info");
+	  	}
+	);
 }
+
+function awardBid(id){
+	
+	 $.post("/auction/[[${auction.auctionId}]]/complete/"+id,
+	  	{
+
+	  	},
+	  	function(a){
+	  		windows.location=a;
+	  	}
+	);
+
+	 
+}
+
 </script>
-<script type="text/javascript">
+<script th:inline="javascript">
 // Set the date we're counting down to
 
-// <% PostedProjectDaoImpl projectDAO1=new PostedProjectDaoImpl(); 
-// Date pro= projectDAO1.getPostProjectById(Integer.parseInt(request.getParameter("id"))).getBidEndingDate();
-// String neDate=new SimpleDateFormat("yyyy-M-dd HH:mm:ss.S").format(pro);
-// %>
-var dates="<%out.print(neDate);%>";
+
+var dates=/*[[${endDate}]]*/ 'default';
+
 var countDownDate = new Date(dates).getTime();
 
 // Update the count down every 1 second3
@@ -214,22 +131,22 @@ var x = setInterval(function() {
 </script>
 <body>
 
-
+<div  th:insert="Header.html"> </div>
 	
 			 
    
-			    <div class="container" th:if="${winner}">
+			    <div class="container" th:if="${isOpen}">
 			    <h1 style="text-align:center;"><b>Auction Completed</b></h1>
 			        <div class="well" id="about" style="padding-top:0px;">
 			           
 			            <p>
-			            	<h3 style="color:#86bd4d; margin:0%; padding:10px; text-align: center; background-color: #1e1e1e;">Bid Closed At : <b><%=product.getFinalValue()%></b></h3>
+			            	<h3 style="color:#86bd4d; margin:0%; padding:10px; text-align: center; background-color: #1e1e1e;">Auction Closed At : <b th:text="${winner.winningBidPrice}"></b></h3>
 			                <img src="https://www.plexusmd.com/PlexusMDAPI/Images/ProfilePicture/default_profile.jpg" class="img-circle" alt="profile pic" style="float:right;width:130px;height:auto; margin-top:10px "><br /> 
 			               
 			            </p>
 			           
-			           	<h2 style="color:#1e1e1e; font-weight: bolder; text-decoration: underline;" ><b><%=product.getCustomer().getCustomerName() %></b></h2>
-			            <h4 style="padding-bottom:50px; color:#1e1e1e ">Total Bids Placed : <%=PostedBidDAO.getBids(product.getProject().getBidId()).size() %></h4>
+			           	<h2 style="color:#1e1e1e; font-weight: bolder; text-decoration: underline;" ><b th:text="${winner.auctionWonBy.username}"></b></h2>
+			            <h4 style="padding-bottom:50px; color:#1e1e1e " > Total Bids Placed : [[${bidPlaced}]] </h4>
 			        </div>
 			      
 			    </div>
@@ -238,7 +155,7 @@ var x = setInterval(function() {
 				
 
 	<!-- Single-Product-View -->
-	<div class="w3aitssinglewthree">
+	<div class="w3aitssinglewthree" style="background-color:white"> 
 		<div class="container">
 <!-- 			+++++++++++++++++++++SHOWCASE++++++++++++++++ -->
 					<div class="products">
@@ -255,20 +172,20 @@ var x = setInterval(function() {
 <!-- 								for(ImagesModel image:ImagesDAO.getAllImageByProjectId(id)){ -->
 <!-- 									file="FileServlet?path=E:/temp/"+image.getPath()+""; -->
 <!-- 							%> -->
-								<li data-thumb=<%=file%>>
+								<li th:data-thumb="@{'../auctionImage/' + ${img}}" th:each="img : ${images}">
 									<input type="hidden" id="pId" value="<%=id%>">
-									<div class="thumb-image detail_images"> <img src="<%=file%>" data-imagezoom="true" class="img-responsive" alt="Groovy Apparel"></div>
+									<div class="thumb-image detail_images"> <img th:src="@{'../auctionImage/' + ${img}}" data-imagezoom="true" class="img-responsive" alt="Groovy Apparel"></div>
 								</li>
 								
-							<%}%>	
+							
 							</ul>
 						</div>
 					</div>
 					<div class="col-md-6 single-top-right">
-						<h1 class="item_name" style="color :#86bd4d;text-transform: capitalize; "><%=project.getBidProjectTitle() %></h1>
+						<h1 class="item_name" style="color :#86bd4d;text-transform: capitalize; " th:text="${auction.auctionTitle}"></h1>
 						
 						<b style="margin-left:5px;">Ends In :</b>
-						<p id="demo" style="color:#191918; width:30%; background-color:#86bd4d; border-radius: 15px; padding:10px; text-align: center;" > <%=project.getBidEndingDate() %></p>
+						<p id="demo" th:text="${endDate}" style="color:#191918; width:30%; background-color:#86bd4d; border-radius: 15px; padding:10px; text-align: center;" > </p>
 <!-- 						style="color:#89e54b; background-color:#191918; border-radius: 25px;" -->
 						<p>This item will be delivered within 5-10 working days.</p>
 						<div class="rating">
@@ -276,92 +193,62 @@ var x = setInterval(function() {
 						</div>
 						<div class="single-price">
 							<ul>
-								<li>Rs.<%=project.getBidStartingPrice() %> <small>Starting Price</small></li>
-								<input type="hidden" id="sPrice" value="<%=project.getBidStartingPrice()%>" >
-<!-- 								<li><a href="#"><i class="fa fa-gift" aria-hidden="true"></i>Apply Coupon</a></li> -->
+								<li th:text="${auction.auctionStartingPrice}" ><small>Starting Price</small></li>
+								<input type="hidden" id="sPrice" th:text="${auction.auctionStartingPrice}" >
+<!-- 								<li><a href="../#"><i class="fa fa-gift" aria-hidden="true"></i>Apply Coupon</a></li> -->
 							</ul>
 							
 						</div>
 						<h4 Style="float: left;text-decoration: underline;"><b>Product Discription : </b></h4>
-						<p class="single-price-text"><%=project.getBidDescription() %></p>
+						<p class="single-price-text" th:text="${auction.auctionDescription}"></p>
 						<div class="cbp-pgcontent aitssinglew3" id="mens_single">
-							<%
-							PostProjectModel model=PostedProjectDAO.getPostProjectById(Integer.parseInt(request.getParameter("id")));
-							if(model.getBidPostedBy().getCustomerId()!=Integer.parseInt(session.getAttribute("customerId").toString()) && winner==false){
-							%>
-							
-							Enter Bid<input class="form-control" id="bidPrice" type="number"><br><br><br>
-							<button class="btn btn-danger agileits my-cart-btn" id="bidBtn" ><i class="fa fa-cart-plus" aria-hidden="true" ></i> Add Bid</button>
+							<div th:if="${owner==false}">
+								Enter Bid<input class="form-control" id="bidPrice" type="number"><br><br><br>
+								<button class="btn btn-success agileits my-cart-btn" id="bidBtn" ><i class="fa fa-cart-plus" aria-hidden="true" ></i> Add Bid</button>
+								<div class="clearfix"></div>
+							</div>
+							<div th:if="${owner==true}" >
+								Enter Bid<input class="form-control" id="bidPrice" type="number" disabled="disabled"><br><br><br>
+							<button class="btn btn-success agileits my-cart-btn" id="bidBtn" disabled="disabled"><i class="fa fa-cart-plus" aria-hidden="true" ></i> Add Bid</button>
 							<div class="clearfix"></div>
-							<%} else{%>
-							
-							Enter Bid<input class="form-control" id="bidPrice" type="number" disabled="disabled"><br><br><br>
-							<button class="btn btn-danger agileits my-cart-btn" id="bidsBtn" disabled="disabled"><i class="fa fa-cart-plus" aria-hidden="true" ></i> Add Bid</button>
-							<div class="clearfix"></div>
+							</div>
 							
 							
-							<%} %>
 						</div>
 						</div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<table class="table">
+						  <thead>
+						    <tr>
+						      <th scope="col">#</th>
+						      <th scope="col">Username</th>
+						      <th scope="col">Bid Date</th>
+						      <th scope="col">Bid Amount</th>
+						      <th scope="col">Action</th>
+						    </tr>
+						  </thead>	
+						   <tbody class="bids" >
+						    
+						   </tbody>
+					  	</table>
+					</div>
 				
+				</div>
 					
-			<center style="border-bottom:1px solid #86bd4d;padding :20px;"><h3 style="font-size:30px; font-weight:bold; color:#86bd4d;">Current Bids</h3></center>
-			<% 
-				int projectId=Integer.parseInt(request.getParameter("id"));
-				
-				for (PostedBidModel bids:PostedBidDAO.getBids(id)){%>
-			<div class="row" id="bid" style="margin-top:25px;border:3px solid #86bd4d;border-width:0px 0px 0px 7px;">
 			
-				<div class="col-md-3" style="" >
-					<center style="height:100px;"><img class="img" style="width:auto; height:80%; margin-top :24px;" src="images/pp.jpg">
-					</center>
-				</div>
-				<div class="col-md-6" style="">
-					<div style="margin-top:15px;">
-						<h4 style="float:left; color:#9f9f9f;"><b><%=bids.getCustomer().getCustomerName() %></b> </h4>
-						<br><h6 style=" position:absolute; color :#86bd4d;text-decoration:underline;">Hyderbad,Pakistan</h6>
-				</div>
-					
-					
-					<h3 style="text-align:left; margin-top :40px; color:#86bd4d;"><b><%=bids.getBidPrice() %></b></h3>
-					<br><h6 style="text-align:left; margin-top :-20px; color:#86bd4d;">Bid on: <%=bids.getPostedOn() %></h6><br>
-				</div>
-			
-				<div class="col-md-3" style="">
-					<%if(!winner){ %>
-					<%int customerId=Integer.parseInt(session.getAttribute("customerId").toString());
-					if(project.getBidPostedBy().getCustomerId()==customerId){ %>	
-					<input type="button" class="btn btn-success" onclick="message(<%=bids.getCustomer().getCustomerId()%>,'<%=bids.getCustomer().getCustomerName() %>');" value="Message">
-					<input type="button" class="btn btn-success award" onclick="award(<%=bids.getBidId()%>)"  value="Award Bid">
-					
-					<%}%>
-					
-					<%if(bids.getCustomer().getCustomerId()==customerId){ %>	
-					<input type="button" class="btn btn-success" onclick="del(<%=bids.getBidId()%>);" id="deleteBid" value="Delete Bid"><%}}%>
-				</div>
-			</div>
-			<%}%>
-			</div>
-
-				</div>
-			</div>
-	<!-- //Single-Product-View -->
-
-
-
-<%} %>
-
-
 	<!-- Custom-JavaScript-File-Links -->
 
-<!-- Default-JavaScript --><script src="js/jquery-2.2.3.js"></script>
-<script src="js/modernizr.custom.js"></script>
-	
+<!-- Default-JavaScript --><script src="../js/jquery-2.2.3.js"></script>
+<script src="../js/modernizr.custom.js"></script>
+	</div>
+	</div>
+	</div>
 		<!-- FlexSlider-JavaScript -->
-			<script defer src="js/jquery.flexslider.js"></script>
+			<script defer src="../js/jquery.flexslider.js"></script>
 			<script>
 				$(window).load(function() {
 					$('.flexslider').flexslider({
@@ -372,19 +259,18 @@ var x = setInterval(function() {
 			</script>
 		<!-- //FlexSlider-JavaScript -->
 
-		<!-- ImageZoom-JavaScript --><script src="js/imagezoom.js"></script>
+		<!-- ImageZoom-JavaScript --><script src="../js/imagezoom.js"></script>
 
 	<!-- //Custom-JavaScript-File-Links -->
 
-		<!-- Bootstrap-JavaScript --> <script src="js/bootstrap.js"></script>
-		<script src="required/notify.min.js"></script>
+		<!-- Bootstrap-JavaScript --> <script src="../js/bootstrap.js"></script>
+		<script src="../required/notify.min.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
-<link rel="stylesheet" href="css/font-awesome-animation.css">
+<link rel="stylesheet" href="../css/font-awesome-animation.css">
 
-<%@ include file="footer.jsp" %>
+
 </body>
 <!-- //Body -->
-</body>
 </html>

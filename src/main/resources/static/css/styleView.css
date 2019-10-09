@@ -1,10 +1,3 @@
-/*--
-	Author: W3Layouts
-	Author URL: http://w3layouts.com
-	License: Creative Commons Attribution 3.0 Unported
-	License URL: http://creativecommons.org/licenses/by/3.0/
---*/ 
--- Reset-Code -- 
 body {
 	padding: 0;
 	margin: 0;
@@ -12,78 +5,6 @@ body {
 	position: relative;
 }
 
-/* body a { */
-/* 	transition: 0.5s all; */
-/* 	-webkit-transition: 0.5s all; */
-/* 	-moz-transition: 0.5s all; */
-/* 	-o-transition: 0.5s all; */
-/* 	-ms-transition: 0.5s all; */
-/* 	text-decoration: none; */
-/* } */
-
-/* body a:hover { */
-/* 	transition: 0.5s all; */
-/* 	-webkit-transition: 0.5s all; */
-/* 	-moz-transition: 0.5s all; */
-/* 	-o-transition: 0.5s all; */
-/* 	-ms-transition: 0.5s all; */
-/* 	text-decoration: none; */
-/* } */
-
-/* body a:focus, a:hover { */
-/* 	text-decoration: none; */
-/* } */
-
-/* input[type="button"], input[type="submit"], button.btn, button.btn:hover { */
-/* 	transition: 0.5s all; */
-/* 	-webkit-transition: 0.5s all; */
-/* 	-moz-transition: 0.5s all; */
-/* 	-o-transition: 0.5s all; */
-/* 	-ms-transition: 0.5s all; */
-/* } */
-
-/* h1, h2, h3, h4, h5, h6 { */
-/* 	margin: 0; */
-/* 	padding: 0; */
-/* 	text-align: center; */
-/* 	font-family: 'Montserrat', sans-serif; */
-/* } */
-
-/* p { */
-/* 	margin: 0; */
-/* } */
-
-/* ul { */
-/* 	margin: 0; */
-/* 	padding: 0; */
-/* } */
-
-/* label { */
-/* 	margin: 0; */
-/* } */
-
-
-/* a:focus, a:hover { */
-/* 	text-decoration: none; */
-/* 	outline: none; */
-/* } */
-
-/* .btn:focus, .btn:active:focus, .btn.active:focus { */
-/* 	outline: none; */
-/* 	box-shadow: none; */
-/* } */
-
-/*-- //Reset-Code --*/ 
-/*-- Index-Page-Styling --*/ 
-
-
-
-	
-
-
-
-
-/*-- Model-Slider --*/
 
 .film_roll_wrapper img {
 	border: 10px solid #FFF;
@@ -2151,7 +2072,7 @@ textarea.text {
 
 .w3aitssinglewthree {
 	padding: 100px 0;
-	background-color: #F5F5F5;
+	background-color: #ffffff;
 }
 
 .single-top-right h1 {

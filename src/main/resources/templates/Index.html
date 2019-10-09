@@ -118,12 +118,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<div class="product-googles-info googles">
 							<div class="men-pro-item">
 								<div class="men-thumb-item">
-									<img th:attr="src=@{|/image/${auction.auctionId}|}" height=100px;/>
+									<img th:attr="src=@{|/image/${auction.auctionId}|}"/>
 <!-- 									<img th:src="@{/image/Book.png}" class="img-thumbnail" alt=""> -->
 									
 									<div class="men-cart-pro">
 										<div class="inner-men-cart-pro">
-											<a href="#" class="link-product-add-cart">Quick View</a>
+											<a th:href="@{'/auction/' + ${auction.auctionId}}" class="link-product-add-cart">Quick View</a>
 										</div>
 									</div>
 									<span class="product-new-top">New</span>
@@ -133,7 +133,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<div class="grid_meta">
 											<div class="product_price">
 												<h4>
-													<a href="#" th:text="${auction.auctionTitle}"></a>
+													<a th:href="@{'/auction/' + ${auction.auctionId}}" th:text="${auction.auctionTitle}"></a>
 												</h4>
 												<div class="grid-price mt-2">
 													<span class="money " th:text="${auction.auctionStartingPrice}"></span>
@@ -168,7 +168,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 											</ul>
 										</div>
 										<div class="googles single-item hvr-outline-out">
-											<form action="<%="ProductViews.jsp?id="+project.getBidId()%>" method="post">
+											<form action="" method="post">
 												<input type="hidden" name="cmd" value="_cart">
 												<input type="hidden" name="add" value="1">
 												<input type="hidden" name="googles_item" value="Farenheit">
@@ -187,9 +187,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							</div>
 						</div>
 					</div>
-<!-- 				<%}%>	 -->
+				
 				</div>
-				<!-- //womens -->
+				<!-- <!-- //womens -->
 				<!-- /mens -->
 				
 				<!--//row-->
@@ -225,16 +225,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- 			 		 		PostProjectModel projectModel=project.getProject(); -->
 						
 <!-- 						%> -->
-							<div class="item">
+							<div class="item" th:each="complete : ${completedProjects}">
 								<div class="gd-box-info text-center">
 									<div class="product-men women_two bot-gd">
 										<div class="product-googles-info slide-img googles">
 											<div class="men-pro-item">
 												<div class="men-thumb-item">
-													<img src="<%=file%>" class="img-thumbnail" alt="">
+													<img th:attr="src=@{|/image/${complete.auction.auctionId}|}"  alt="">
 													<div class="men-cart-pro">
 														<div class="inner-men-cart-pro">
-															<a href="<%="ProductViews.jsp?id="+projectModel.getBidId()%>" class="link-product-add-cart">Quick View</a>
+															<a th:href="@{'/auction/' + ${complete.auction.auctionId}}" class="link-product-add-cart">Quick View</a>
 														</div>
 													</div>
 													<span class="product-new-top">Completed</span>
@@ -245,10 +245,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 														<div class="grid_meta">
 															<div class="product_price">
 																<h4>
-																	<a href="<%="ProductViews.jsp?id="+projectModel.getBidId()%>"><%=projectModel.getBidProjectTitle() %> </a>
+																	<a th:href="@{'/auction/' + ${complete.auction.auctionId}}" th:text="${complete.auction.auctionTitle}"> </a>
 																</h4>
 																<div class="grid-price mt-2">
-																	<span class="money ">Auction for Rs.<%=project.getFinalValue() %></span>
+																	<span class="money ">Auction for Rs.[[${complete.winningBidPrice}]]</span>
 																</div>
 															</div>
 															<ul class="stars">
@@ -280,7 +280,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 															</ul>
 														</div>
 														<div class="googles single-item hvr-outline-out">
-															<form action="<%="ProductViews.jsp?id="+projectModel.getBidId()%>" method="post">
+															<form action="" method="post">
 																<input type="hidden" name="cmd" value="_cart">
 																<input type="hidden" name="add" value="1">
 																<input type="hidden" name="googles_item" value="Fastrack Aviator">

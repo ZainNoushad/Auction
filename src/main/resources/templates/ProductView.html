@@ -211,17 +211,6 @@ var x = setInterval(function() {
 }, 1000);
 </script>
 <body>
-<%@ include file="header.jsp" %>
-<%@ include file="Not.jsp" %>
-<%	if(request.getParameter("id")==null){
-		response.sendRedirect("Index.jsp");
-	}
-	else{
-	%>
-
-	
-			 
-    <%boolean winner=false;
     	SelledProductModel product=SelledProductDAO.checkCompleteProject(Integer.parseInt(request.getParameter("id")));
    			if(product!=null){ %>
 			    <div class="container">
@@ -261,7 +250,7 @@ var x = setInterval(function() {
 								for(ImagesModel image:ImagesDAO.getAllImageByProjectId(id)){
 									file="FileServlet?path=E:/temp/"+image.getPath()+"";
 							%>
-								<li data-thumb=<%=file%>>
+								<li data-thumb="">
 									<input type="hidden" id="pId" value="<%=id%>">
 									<div class="thumb-image detail_images"> <img src="<%=file%>" data-imagezoom="true" class="img-responsive" alt="Groovy Apparel"></div>
 								</li>
