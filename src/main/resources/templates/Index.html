@@ -211,20 +211,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<div class="mid-slider">
 					
 						<div class="owl-carousel owl-theme row">
-<!-- 						<% -->
-<!-- 							for ( SelledProductModel project : SelledProductDAO.getCompleteProject(6)){  -->
-<!-- 								String file=""; -->
-<!-- // 			 		 			System.out.print(file+" P_ID :  "+project.getBidId()); -->
-<!-- 				 		 		ImagesModel image=ImagesDAO.getImageByProjectId(project.getProject().getBidId()); -->
-<!-- 			 		 		if(ImagesDAO.getImageByProjectId(project.getProject().getBidId())==null){ -->
-<!-- 			 		 			 file="FileServlet?path=E:/temp/aa.jpg"; -->
-<!-- 			 		 		} -->
-<!-- 			 		 		else{ -->
-<!-- 			 		 			 file="FileServlet?path=E:/temp/"+ImagesDAO.getImageByProjectId(project.getProject().getBidId()).getPath()+""; -->
-<!-- 			 		 		} -->
-<!-- 			 		 		PostProjectModel projectModel=project.getProject(); -->
-						
-<!-- 						%> -->
 							<div class="item" th:each="complete : ${completedProjects}">
 								<div class="gd-box-info text-center">
 									<div class="product-men women_two bot-gd">
@@ -299,7 +285,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									</div>
 								</div>
 							</div>
-							<%}%>
+							
 						</div>
 					</div>
 				</div>
