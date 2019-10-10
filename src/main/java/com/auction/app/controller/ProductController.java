@@ -171,6 +171,7 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/auction/{auctionId}/complete/{bidId}")
+	@ResponseBody
 	public String completeAuction(@PathVariable(value="auctionId") Integer auctionId, @PathVariable(value="bidId") Integer bidId) {
 		String username=SecurityContextHolder.getContext().getAuthentication().getName();
 		User whoAmI=userRepository.findByUsername(username);
