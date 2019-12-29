@@ -10,4 +10,8 @@ import com.auction.app.model.AuctionBids;
 public interface AuctionBidsRepository extends CrudRepository<AuctionBids, Integer> {
 	
 	List<AuctionBids> findByAuction(Auction auction);
+	List<AuctionBids> findByAuctionOrderByBidOnDesc(Auction auction);
+	List<AuctionBids> findByAuctionOrderByBidPriceDesc(Auction auction);
+	List<AuctionBids> findByAuctionOrderByBidPriceAsc(Auction auction);
+	
 }

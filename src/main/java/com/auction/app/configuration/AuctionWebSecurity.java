@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
 import com.auction.app.repository.UserRepository;
 
@@ -61,6 +62,7 @@ public class AuctionWebSecurity extends WebSecurityConfigurerAdapter {
         .logoutSuccessUrl("/")
         .and()
         .exceptionHandling().accessDeniedPage("/");
+       
           
 //                .antMatchers("**/secured/**").authenticated()
 //                .anyRequest().permitAll()
@@ -80,6 +82,7 @@ public class AuctionWebSecurity extends WebSecurityConfigurerAdapter {
            .antMatchers("/images/**")
            .antMatchers("/signUp")
            .antMatchers("/checkEmail")
-           .antMatchers("/resetPassword");
+           .antMatchers("/resetPassword")
+           .antMatchers("/topic/**","/user/**");
 	}
 }

@@ -45,7 +45,7 @@ import com.auction.app.repository.UserRepository;
 import com.auction.app.util.DateUtil;
 
 @Controller
-@PropertySource("auction.properties")
+@PropertySource("classpath:auction.properties")
 public class ProjectController {
 	
 	
@@ -165,4 +165,10 @@ public class ProjectController {
 		}
 		
 	}
+	
+	@RequestMapping(value = "/messageApp")
+	public String messageApp() {
+		return "Messaging";
+	}
+	
 }

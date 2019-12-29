@@ -125,31 +125,43 @@ public class ProductController {
 	
 	@RequestMapping("/auction/{auctionId}/bids")
 	@ResponseBody
-	public String getBidList(@PathVariable(value = "auctionId")Integer auctionId,Model model) {
+	public String getBidList(@PathVariable(value = "auctionId")Integer auctionId,Model model,String filter) {
 		Auction auction=auctionRepository.findById(auctionId).get();
-		List<AuctionBids> auctionBids=auctionBidsRepository.findByAuction(auction);
+		
 		String username=SecurityContextHolder.getContext().getAuthentication().getName();
 		User whoAmI=userRepository.findByUsername(username);
-		CompletedAuction winner=completedAuctionRepository.findByAuction(auction);
-		
 		String html="";
-		int count=1;
-		for(AuctionBids bid : auctionBids) {
-			html+="								<tr>\n" + 
-					"						     	<td>"+(count++)+"</td>\n" + 
-					"						     	<td>"+bid.getCustomer().getUsername()+" </td>\n" + 
-					"						     	<td>"+bid.getBidOn()+" </td>\n" + 
-					"						     	<td>"+bid.getBidPrice()+" </td>\n";
-			if(whoAmI.getUserId()==bid.getCustomer().getUserId() && winner==null) {
-				html+="<td><input type='button' class='btn btn-success' onclick='delBid("+bid.getBidId()+")' value='Delete Bid'></td>";
+		if(whoAmI.getUserId() !=null && auction.getAuctionBy().getUserId() != null) {
+			
+			CompletedAuction winner=completedAuctionRepository.findByAuction(auction);
+			List<AuctionBids> auctionBids = null;
+			
+			if(filter.equals("1"))
+				auctionBids=auctionBidsRepository.findByAuctionOrderByBidOnDesc(auction);
+			else if(filter.equals("2"))
+				auctionBids=auctionBidsRepository.findByAuctionOrderByBidOnDesc(auction);
+			else if(filter.equals("3"))
+				auctionBids=auctionBidsRepository.findByAuctionOrderByBidPriceAsc(auction);
+			
+			
+			html="";
+			int count=1;
+			for(AuctionBids bid : auctionBids) {
+				html+="								<tr>\n" + 
+						"						     	<td>"+(count++)+"</td>\n" + 
+						"						     	<td>"+bid.getCustomer().getUsername()+" </td>\n" + 
+						"						     	<td>"+bid.getBidOn()+" </td>\n" + 
+						"						     	<td>"+bid.getBidPrice()+" </td>\n";
+				if(whoAmI.getUserId()==bid.getCustomer().getUserId() && winner==null) {
+					html+="<td><input type='button' class='btn btn-success' onclick='delBid("+bid.getBidId()+")' value='Delete Bid'></td>";
+				}
+				if(whoAmI.getUserId()==auction.getAuctionBy().getUserId() && winner==null) {
+					html+="<td><input type='button' class='btn btn-success' onclick='message()' value='Message'>"+
+						  "  <input type='button' class='btn btn-success' onclick='awardBid("+bid.getBidId()+")' value='Award Bid'></td>";
+				}
+				html+="</tr>";
 			}
-			if(whoAmI.getUserId()==auction.getAuctionBy().getUserId() && winner==null) {
-				html+="<td><input type='button' class='btn btn-success' onclick='message()' value='Message'>"+
-					  "  <input type='button' class='btn btn-success' onclick='awardBid("+bid.getBidId()+")' value='Award Bid'></td>";
-			}
-			html+="</tr>";
 		}
-		
 		
 		return html;
 	}
